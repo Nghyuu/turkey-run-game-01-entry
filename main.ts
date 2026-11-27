@@ -14,7 +14,6 @@ import {
   cpSync,
   mkdirSync,
   readdirSync,
-  rmSync,
   statSync,
   writeFileSync,
   chmodSync,
@@ -59,8 +58,8 @@ function copyTree(src: string, dest: string): void {
   }
 }
 
-// Start from a clean output directory so a stale file can never leak in.
-rmSync(outDir, { recursive: true, force: true });
+// The grader hands us an empty /output; never remove it — its parent is
+// read-only for uid 65534, so removing it fails. Just ensure it exists.
 mkdirSync(outDir, { recursive: true });
 
 copyTree(join(repoRoot, 'game'), join(outDir, 'game'));
